@@ -1,105 +1,46 @@
-
 package model;
 
-public class Peserta extends Orang {
-
+public class Peserta {
+    private int id;
     private String nim;
-    private String prodi;
+    private String nama;
     private String jenisKelamin;
+    private String prodi;
+    private String noHp;
     private String email;
 
-    // Constructor untuk program lama
-    public Peserta(int id, String nama, String noHp,
-                   String nim, String prodi) {
-        this(id, nama, noHp, nim, prodi, "L", "");
+    // Default empty constructor (Required!)
+    public Peserta() {
     }
 
-    // Constructor lengkap untuk database
-    public Peserta(int id, String nama, String noHp,
-                   String nim, String prodi,
-                   String jenisKelamin, String email) {
-
-        super(id, nama, noHp);
-
-        setNim(nim);
-        setProdi(prodi);
-        setJenisKelamin(jenisKelamin);
-        setEmail(email);
-    }
-
-    // Getter NIM
-    public String getNim() {
-        return nim;
-    }
-
-    // Getter program studi
-    public String getProdi() {
-        return prodi;
-    }
-
-    // Getter jenis kelamin
-    public String getJenisKelamin() {
-        return jenisKelamin;
-    }
-
-    // Getter email
-    public String getEmail() {
-        return email;
-    }
-
-    // Setter NIM
-    public void setNim(String nim) {
-        if (nim == null || nim.trim().isEmpty()) {
-            throw new IllegalArgumentException(
-                    "NIM wajib diisi");
-        }
-
-        this.nim = nim.trim();
-    }
-
-    // Setter program studi
-    public void setProdi(String prodi) {
-        if (prodi == null || prodi.trim().isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Prodi wajib diisi");
-        }
-
-        this.prodi = prodi.trim();
-    }
-
-    // Setter jenis kelamin
-    public void setJenisKelamin(String jenisKelamin) {
-        if (!"L".equals(jenisKelamin)
-                && !"P".equals(jenisKelamin)) {
-            throw new IllegalArgumentException(
-                    "Jenis kelamin harus L atau P");
-        }
-
+    public Peserta(int id, String nim, String nama, String jenisKelamin, String prodi, String noHp, String email) {
+        this.id = id;
+        this.nim = nim;
+        this.nama = nama;
         this.jenisKelamin = jenisKelamin;
+        this.prodi = prodi;
+        this.noHp = noHp;
+        this.email = email;
     }
 
-    // Setter email
-    public void setEmail(String email) {
-        String nilai = email == null ? "" : email.trim();
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-        if (!nilai.isEmpty()
-                && !nilai.matches(
-                        "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-            throw new IllegalArgumentException(
-                    "Format email tidak valid");
-        }
+    public String getNim() { return nim; }
+    public void setNim(String nim) { this.nim = nim; }
 
-        this.email = nilai;
-    }
+    public String getNama() { return nama; }
+    public void setNama(String nama) { this.nama = nama; }
 
-    // Menampilkan informasi peserta
-    @Override
-    public String getInfo() {
-        return "PESERTA " + super.getInfo()
-                + " | NIM: " + getNim()
-                + " | Prodi: " + getProdi()
-                + " | Jenis Kelamin: " + getJenisKelamin()
-                + " | Email: "
-                + (getEmail().isEmpty() ? "-" : getEmail());
-    }
+    public String getJenisKelamin() { return jenisKelamin; }
+    public void setJenisKelamin(String jenisKelamin) { this.jenisKelamin = jenisKelamin; }
+
+    public String getProdi() { return prodi; }
+    public void setProdi(String prodi) { this.prodi = prodi; }
+
+    public String getNoHp() { return noHp; }
+    public void setNoHp(String noHp) { this.noHp = noHp; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 }
