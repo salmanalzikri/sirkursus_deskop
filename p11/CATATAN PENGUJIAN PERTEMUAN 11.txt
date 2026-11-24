@@ -1,0 +1,123 @@
+=====================================================================
+CATATAN PENGUJIAN PERTEMUAN 11
+Menu, Navigasi, Login, dan Integrasi Modul
+Project : SIKURSUS Desktop - Sistem Informasi Manajemen Kursus & Pelatihan
+=====================================================================
+Nama    : salman alzikri
+NIM     : 2924014
+Kelas   : 5A
+Tanggal : 24 November 2026
+Tools   : NetBeans 8.2, Java Swing, XAMPP (MySQL/MariaDB), JDBC
+
+---------------------------------------------------------------------
+A. HASIL PENGUJIAN
+---------------------------------------------------------------------
+
+ID   | Skenario                                | Hasil     | Keterangan
+-----+-----------------------------------------+-----------+----------------------------------------
+T01  | Username dan password kosong            | Berhasil  | Muncul pesan "wajib diisi", tidak masuk
+     |                                         |           | Dashboard
+T02  | Username benar, password salah          | Berhasil  | Login gagal, kolom password dikosongkan
+T03  | Login admin / Admin@123                 | Berhasil  | Dashboard terbuka, role ADMIN, seluruh
+     |                                         |           | menu Master aktif
+T04  | Login operator / Operator@123           | Berhasil  | Dashboard terbuka, role OPERATOR, menu
+     |                                         |           | Instruktur/Kursus/Kelas nonaktif
+T05  | Klik menu Peserta 5 kali                | Berhasil  | Hanya satu PesertaFrame yang terbuka
+T06  | Tutup PesertaFrame dengan tombol X      | Berhasil  | Dashboard tetap hidup
+T07  | Buka Peserta lagi setelah ditutup       | Berhasil  | PesertaFrame dapat dibuat kembali
+T08  | Buka Kursus/Instruktur/Kelas (ADMIN)    | Berhasil  | Form tampil, Dashboard tetap aktif
+T09  | Logout saat child form masih terbuka    | Berhasil  | Semua child ditutup, session dihapus,
+     |                                         |           | LoginFrame muncul
+T10  | Matikan MySQL lalu coba login           | Berhasil  | Muncul pesan database error, aplikasi
+     |                                         |           | tidak crash tanpa penjelasan
+T11  | Pindahkan project ke folder lain        | Berhasil  | Icon tetap tampil karena dimuat dari
+     |                                         |           | resource project
+T12  | Pilih Tutup Aplikasi                    | Berhasil  | Muncul konfirmasi, pilihan Yes menutup
+     |                                         |           | program
+
+Ringkasan: 12 skenario diuji, 12 berhasil, 0 gagal, 0 dilewati.
+
+---------------------------------------------------------------------
+B. PENGUJIAN TAMBAHAN
+---------------------------------------------------------------------
+
+- Tabel users di database db_sikursus berisi dua akun (admin dan
+  operator). Kolom password_hash berisi hash PBKDF2, bukan teks biasa.
+  (Bukti: 06_users_table.png)
+- Popup menu pada Dashboard (Tentang Aplikasi dan Refresh) muncul saat
+  klik kanan pada label. (Bukti: 07_popup_menu.png)
+
+---------------------------------------------------------------------
+C. KENDALA YANG DITEMUI DAN PENYELESAIANNYA
+---------------------------------------------------------------------
+
+1. Build gagal karena DemoInheritance.java dan DemoPolymorphism.java
+   masih memakai constructor Peserta lama.
+   Penyelesaian: kedua file demo dijadikan komentar agar project dapat
+   dikompilasi.
+
+2. Error pada PasswordUtil karena method isBlank() tidak tersedia di
+   Java 8 (project memakai JDK 1.8).
+   Penyelesaian: diganti dengan stored.trim().isEmpty().
+
+3. Dialog "not enough space in your temp folder" dari NetBeans saat
+   mengunduh indeks Maven.
+   Penyelesaian: ruang drive dibersihkan dan pembaruan indeks Maven
+   dinonaktifkan. Masalah ini tidak memengaruhi kode aplikasi.
+
+(Hapus poin yang tidak kamu alami, atau tambahkan kendala lain yang
+kamu temui.)
+
+---------------------------------------------------------------------
+D. KESIMPULAN
+---------------------------------------------------------------------
+
+Pengujian Pertemuan 11 pada aplikasi SIKURSUS Desktop dilakukan terhadap
+12 skenario (T01-T12). Hasilnya: seluruh skenario berhasil dan sesuai
+dengan hasil yang diharapkan.
+
+1. Autentikasi berjalan dengan benar. Login dengan kolom kosong atau
+   password salah ditolak, sedangkan akun admin dan operator berhasil
+   masuk. Password di tabel users tersimpan dalam bentuk hash PBKDF2,
+   bukan teks biasa.
+
+2. Session dan role berfungsi. Dashboard menampilkan username dan role
+   dari UserSession. Akun ADMIN dapat mengakses seluruh menu Master,
+   sedangkan akun OPERATOR hanya dapat mengakses menu Peserta
+   (Instruktur, Kursus, dan Kelas nonaktif).
+
+3. Navigasi antar modul berjalan baik. WindowManager mencegah
+   PesertaFrame terbuka berkali-kali, dan menutup form child dengan
+   tombol X tidak menutup Dashboard karena memakai DISPOSE_ON_CLOSE.
+
+4. Logout bekerja sesuai alur: semua form child ditutup, session
+   dihapus, lalu aplikasi kembali ke LoginFrame. Menu Tutup Aplikasi
+   menampilkan konfirmasi sebelum program berhenti.
+
+5. Saat MySQL dimatikan, aplikasi menampilkan pesan database error dan
+   tidak berhenti tanpa penjelasan.
+
+6. Popup menu pada Dashboard dapat ditampilkan melalui klik kanan.
+
+7. Icon menu dimuat dari resource project (getResource), bukan dari
+   path komputer pribadi, sehingga tetap tampil setelah project
+   dipindahkan ke folder lain.
+
+Dengan demikian, alur Login -> Session -> Dashboard -> Role -> Navigasi
+telah berjalan sesuai tujuan praktikum Pertemuan 11. Hal yang masih
+perlu dilengkapi pada tahap berikutnya adalah modul CRUD Instruktur,
+Kursus, dan Kelas yang saat ini masih berupa kerangka form, serta modul
+Transaksi dan Laporan yang akan dikembangkan pada pertemuan berikutnya
+(Laporan dengan JasperReports pada Pertemuan 12).
+
+---------------------------------------------------------------------
+E. DAFTAR BUKTI (SCREENSHOT)
+---------------------------------------------------------------------
+
+01_login.png                          - Tampilan LoginFrame
+02_dashboard_admin.png                - Dashboard login sebagai ADMIN
+03_dashboard_operator.png             - Dashboard sebagai OPERATOR
+04_master_peserta.png                 - Form Master Peserta dari Dashboard
+05_master_kursus_instruktur_kelas.png - Form Kursus, Instruktur, Kelas
+06_users_table.png                    - Tabel users di phpMyAdmin
+07_popup_menu.png                     - Popup menu pada Dashboard
