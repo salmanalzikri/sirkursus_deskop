@@ -1,0 +1,110 @@
+=====================================================================
+CATATAN PENGUJIAN PERTEMUAN 12
+Jaspersoft Studio: Laporan dan Koneksi Database Java
+Project : SIKURSUS Desktop - Sistem Informasi Manajemen Kursus & Pelatihan
+=====================================================================
+Nama    : salman al zikri
+NIM     : 2924014
+Kelas   : 5A
+Tanggal : 25 November 2026
+Tools   : Jaspersoft Studio 6.20.0, JasperReports Library 6.20.0,
+          NetBeans 8.2 (Maven, JDK 1.8), XAMPP (MySQL/MariaDB),
+          MySQL Connector/J 26.7.0
+
+---------------------------------------------------------------------
+A. HASIL PENGUJIAN
+---------------------------------------------------------------------
+
+No | Langkah                                    | Hasil    | Keterangan
+---+--------------------------------------------+----------+------------------------------
+1  | Buat project SIKURSUS_REPORT               | Berhasil | Project tampil di Project
+   |                                            |          | Explorer tanpa error
+2  | Buat JDBC Data Adapter "SIKURSUS MySQL"    | Berhasil | Test Connection sukses
+   |                                            |          | (jdbc:mysql://localhost:3306/
+   |                                            |          | db_sikursus, user root)
+3  | Tambah Connector/J pada Driver Classpath   | Berhasil | Driver dikenali, tidak ada
+   |                                            |          | ClassNotFoundException
+4  | Buat report Blank A4 laporan_peserta.jrxml | Berhasil | Query SELECT tabel peserta
+   |                                            |          | berjalan tanpa error
+5  | Read Fields dan susun band report          | Berhasil | Title, Column Header, Detail,
+   |                                            |          | dan Page Footer tersusun
+6  | Preview report                             | Berhasil | Data peserta tampil, Errors (0),
+   |                                            |          | 1 records, 1 pages
+7  | Export PDF                                 | Berhasil | Laporan_Peserta_SIKURSUS.pdf
+   |                                            |          | tersimpan dan dapat dibuka
+8  | Compile .jasper dan copy ke                | Berhasil | laporan_peserta.jrxml dan .jasper
+   | src/main/resources/report/                 |          | berada di folder resource
+9  | Tambah dependency jasperreports 6.20.0     | Berhasil | Clean and Build: BUILD SUCCESS
+   | di pom.xml                                 |          |
+10 | Buat ReportService dan tombol Cetak        | Berhasil | Klik Cetak membuka JasperViewer
+   | pada PesertaFrame                          |          | berisi data peserta
+11 | Tutup JasperViewer                         | Berhasil | Aplikasi utama tidak ikut tertutup
+
+Ringkasan: 11 langkah diuji, 11 berhasil, 0 gagal.
+
+---------------------------------------------------------------------
+B. KENDALA YANG DITEMUI DAN PENYELESAIANNYA
+---------------------------------------------------------------------
+
+1. Versi Jaspersoft Studio yang diberikan dosen adalah 6.20.0, sedangkan
+   panduan menyebut 6.21.5.
+   Penyelesaian: dependency di pom.xml disamakan menjadi jasperreports
+   6.20.0 agar file .jasper kompatibel dengan runtime.
+
+2. Package report sempat salah nama. Rename yang pertama justru mengubah
+   nama class menjadi "report", sedangkan package-nya masih
+   "ReportService", sehingga muncul error merah pada baris package.
+   Penyelesaian: class dikembalikan menjadi ReportService, lalu package
+   di-rename menjadi "report" (huruf kecil).
+
+3. PesertaFrame tidak memiliki tab Design, sehingga tombol tidak dapat
+   ditambah lewat drag and drop.
+   Penyelesaian: memakai tombol yang sudah ada di kode PesertaFrame dan
+   mengisi event-nya dengan
+   report.ReportService.tampilkanLaporanPeserta();
+
+4. Muncul pesan "No suitable driver found for
+   jdbc:mysql://localhost:3306/db_sikursus" setelah dependency
+   JasperReports ditambahkan.
+   Penyelesaian: dependency MySQL Connector/J di pom.xml diperiksa dan
+   dipastikan ada, lalu dilakukan Clean and Build.
+
+5. NetBeans menampilkan pesan "not enough space in your temp folder"
+   saat mengunduh indeks Maven.
+   Penyelesaian: ruang drive dibersihkan. Masalah ini tidak memengaruhi
+   kode aplikasi.
+
+---------------------------------------------------------------------
+C. KESIMPULAN
+---------------------------------------------------------------------
+
+Praktikum Pertemuan 12 berhasil dikerjakan. Laporan peserta dirancang di
+Jaspersoft Studio dengan sumber data JDBC ke database db_sikursus,
+ditampilkan pada Preview, lalu diekspor menjadi PDF. File
+laporan_peserta.jasper hasil kompilasi diletakkan pada resource project
+(src/main/resources/report/) dan dipanggil dari tombol Cetak pada
+PesertaFrame melalui class ReportService, sehingga JasperViewer
+menampilkan data peserta yang sama dengan database.
+
+Hal penting yang dipelajari: versi Jaspersoft Studio dan library
+JasperReports harus sama (6.20.0) agar file .jasper dapat dibaca, driver
+MySQL pada Jaspersoft Studio dan pada project Java adalah dua classpath
+yang terpisah, dan viewer dibuka dengan viewReport(print, false) agar
+menutup viewer tidak menutup seluruh aplikasi.
+
+Tahap berikutnya: membuat laporan pendaftaran dengan query JOIN
+(peserta, kelas, kursus, dan status pendaftaran).
+
+---------------------------------------------------------------------
+D. DAFTAR BUKTI
+---------------------------------------------------------------------
+
+laporan_peserta.jrxml                 - Source report
+laporan_peserta.jasper                - Report hasil kompilasi
+Laporan_Peserta_SIKURSUS.pdf          - Hasil export PDF
+01_test_connection_data_adapter.png   - Test Connection Data Adapter
+02_design_report.png                  - Tab Design report
+03_preview.png                        - Preview dengan data peserta
+04_struktur_project_report.png        - Folder report pada project
+05_pesertaframe_jasperviewer.png      - PesertaFrame + JasperViewer
+ReportService.java                    - Ada di package report pada project
